@@ -12,6 +12,7 @@ http.listen(8080);
 app.use('/js', express.static('www/js'));
 app.use('/css', express.static('www/css'));
 app.use('/img', express.static('www/img'));
+app.use('/partials', express.static('www/partials'));
 app.use('/bower_components', express.static('www/bower_components'));
 
 app.get('/', function (req, res) {
@@ -63,17 +64,19 @@ io.on('connection', function (socket) {
   socket.on('client:get_rooms', function (uid) {
     var user = find_user(uid);
     local_rooms = [];
-    rooms.forEach(function (r) {
+    for (var i=0; i<rooms.length; i++){
+      var r = rooms[i];
       if (dist_km(user.position, r.center) < r.radius) {
         local_rooms.push(r.rid);
       }
-    })
+    }
     socket.emit('server:rooms', local_rooms);
   });
 
   socket.on('client:join_room', function (data) {
     var uid = data.uid;
     var user = find_user(uid);
+    update_posn(user, data.position);
     var rid = data.rid;
     var room = find_room(rid);
     var resp = validate(room, user);
@@ -109,7 +112,7 @@ io.on('connection', function (socket) {
 
   socket.on('client:add_msg', function (data) {
     var uid = data.uid;
-    var user = find_user(uid);[]
+    var user = find_user(uid);
     if (Date.now() - user.timestamp > CLIENT_TIMEOUT) {
       
       // if the user has not updated location in a while,
@@ -118,7 +121,7 @@ io.on('connection', function (socket) {
     }
     var msg = new Message(uid, data.msg)
     if (user.rid != '') {
-      var room = find_room(rid);
+      var room = find_room(user.rid);
       room.messages.push(msg);
       // notify all room members
       room.users.forEach(function (u) {
@@ -131,18 +134,23 @@ io.on('connection', function (socket) {
 
   socket.on('client:add_room', function (data) {
     var name = data.name;
-    var center = data.location;
-    var radius = data.radius;
+    var center = data.position;
+    var radius = parseInt(data.radius);
     var room = new Room(name, center, radius)
+    console.log('===================');
+    console.log(room);
+    console.log('===================');
     rooms.push(room);
-    socket.emit('server:add_room_result', 1);
+    socket.emit('server:add_room_result', {resp:1, rid:room.rid});
   });
 
   socket.on('client:heartbeat', function (data) {
     var uid = data.uid;
     var user = find_user(uid);
-    user.position = data.position;
-    user.last_updated = Date.now();
+    if (user) {
+      user.position = data.position;
+      user.last_updated = Date.now();
+    }
   });
 
   socket.on('disconnect', function () {
@@ -154,7 +162,9 @@ io.on('connection', function (socket) {
 /******************/
 
 function validate(r,u){
-  if (dist_km(r.position, u.position) <= r.radius) {
+  var d = dist_km(r.position, u.position);
+  console.log(d);
+  if (d <= r.radius) {
     return 1;
   } else {
     return -1;
@@ -167,19 +177,29 @@ function update_posn (u, posn) {
 }
 
 function find_user(uid) {
-  users.forEach(function (u) {
+  for (var i=0; i<users.length; i++){
+    var u = users[i];
     if (u.uid == uid) {
       return u;
     }
-  });
+  }
+  console.log('===================');
+  console.log("DIDN'T FIND USER : "+uid);
+  console.log(users);
+  console.log('===================');
 }
 
 function find_room(rid) {
-  rooms.forEach(function (r) {
+  for (var i=0; i<rooms.length; i++){
+    var r = rooms[i];
     if (r.rid == rid) {
       return r;
     }
-  });
+  }
+  console.log('===================');
+  console.log("DIDN'T FIND ROOM : "+rid);
+  console.log(rooms);
+  console.log('===================');
 }
 
 function dist_km(p1, p2) {

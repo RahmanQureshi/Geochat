@@ -1,13 +1,15 @@
 angular.module('geoChatApp')
 
-    .controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval, $location) {
+    .controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval, $location, $window) {
 
     $scope.name = "Hello, World";
     $scope.rooms = [];
-    var socket = SocketService.get('server');
+    var socket;
 
     function init() {
-        var name = prompt('Please enter your nick name');
+        SocketService.newConnection('server', 'http://localhost:8080'); // switched from configuration to here because we providers were not behaving
+        socket = SocketService.get('server');
+        var name = $window.prompt('Please enter your name');
         UserService.setName(name);
         LocationService.getLocation().then(function (position) {
             socket.emit('client:handshake', {
@@ -23,7 +25,7 @@ angular.module('geoChatApp')
 
     $interval(function () {
         sendLocation();
-    }, 25000);
+    }, 5000);
 
     function sendLocation() {
         LocationService.getLocation().then(function (position) {
@@ -39,6 +41,7 @@ angular.module('geoChatApp')
 
     $scope.joinRoom = function (rid) {
         LocationService.getLocation().then(function (position) {
+            console.log(UserService.getUid());
             socket.emit('client:join_room', {
                 uid: UserService.getUid(),
                 rid: rid,
@@ -50,7 +53,9 @@ angular.module('geoChatApp')
         });
     }
 
-    $scope.addRoom = function (name, radius) {
+    $scope.addRoom = function () {
+        var name = prompt('Please enter your name');
+        var radius = prompt('Please enter a radius');
         LocationService.getLocation().then(function (position) {
             socket.emit('client:add_room', {
                 name: name,

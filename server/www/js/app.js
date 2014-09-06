@@ -1,16 +1,15 @@
 angular.module('geoChatApp', ['ngRoute'])
 
-    .config(function ($routeProvider, socketServiceProvider) {
+    .config(function ($routeProvider) {
 
     $routeProvider.when('/', {
-        templateUrl: '/www/partials/main.html',
+        templateUrl: '/partials/main.html',
         controller: 'MainCtrl'
     })
         .when('/board', {
-        templateUrl: '/www/partials/board.html',
+        templateUrl: '/partials/board.html',
         controller: 'BoardCtrl'
     });
 
-    SocketServiceProvider.newConnection('server', 'http://hbar.ca:8080');
 
 });
