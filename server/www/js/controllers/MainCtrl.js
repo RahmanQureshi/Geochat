@@ -1,33 +1,42 @@
 app.module('geoChatApp')
 
-	.controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval) {
-		
-		$scope.name = 'hello, world!';
+	.controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval, $location) {
+		$scope.name = "Hello, World";
 		$scope.rooms = [];
 		var socket = SocketService.get('server');
 
-		$scope.register = function (name) {
+		(function () {
+			var name = prompt('Please Enter Your Nick Name');
 			UserService.setName(name);
 			LocationService.getLocation().then(position) {
-				socket.emit('client:handshake', {'name':name, latitude: position.coords.latitude, longitude: position.coords.longitude });
+				socket.emit('client:handshake', {'name':name, position:{latitude: position.coords.latitude, longitude: position.coords.longitude}});
+			};
+		})();
+
+		$interval(function () {
+			sendLocation();
+		}, 25000);
+		function sendLocation () {
+			LocationService.getLocation().then(position) {
+				socket.emit('client:heartbeat', {uid:UserService.getUid, position:{ latitude: position.coords.latitude, longitude: position.coords.longitude}});
 			};
 		};
-		$interval(function () {
-			$scope.register(UserService.getName());
-		}, 25000);
 
 		$scope.joinRoom = function (rid) {
-			socket.emit('client:join_room', { uid: UserService.getUid, rid:rid });
+			LocationService.getLocation().then(position) {
+				socket.emit('client:join_room', {uid: UserService.getUid, rid:rid, position: {latitude:position.coords.latitude, longitude: position.coords.longitude}});
+			}
 		};
 
 		$scope.addRoom = function (name, radius) {
-			var position = LocationService.getLocation();
-			socket.emit('client:add_room', {name: name, latitude:position.coords.latitude, longitude:position.coords.longitude, radius:radius });
+			LocationService.getLocation().then(function (position) {
+				socket.emit('client:add_room', {name: name, position:{latitude:position.coords.latitude, longitude:position.coords.longitude}, radius:radius });
+			});
 		};
 
 		socket.on('server:add_room_result', function (room) {
-			if ( typeof room == int && room == -1 ) {
-				alert ( 'Failed to create Room' );
+			if ( room.resp == -1) {
+				alert ( 'Failed to create Room; -1' );
 			} else {
 				$scope.joinRoom(room.rid);
 			}
@@ -37,6 +46,13 @@ app.module('geoChatApp')
 		});
 		socket.on('server:rooms', function (roomArray) {
 			$scope.rooms = roomArray;
+		});
+		socket.on('server:join_room_result', function (data) {
+			if ( data.resp == -1 ) {
+				alert(' Failed to join room ');
+			} else {
+				$location.path('/board');
+			}
 		});
 
 		(function getRooms() {
