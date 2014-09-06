@@ -47,7 +47,7 @@ function room_of(name) {
 
 io.on('connection', function (socket) {
   // io.emit('this', { will: 'be received by everyone'});
-  console.log("con'c't'd")
+  console.log("con'c't'd");
   // socket.emit('server:')
 
   // wait for user to provide location

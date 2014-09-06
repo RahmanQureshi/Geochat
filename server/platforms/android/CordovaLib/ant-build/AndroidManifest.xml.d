@@ -1,2 +1,2 @@
-C:\cygwin\home\Rahman\mhacks\phonegap2\my-app\platforms\android\CordovaLib\ant-build\AndroidManifest.xml : \
-C:\cygwin\home\Rahman\mhacks\phonegap2\my-app\platforms\android\CordovaLib\AndroidManifest.xml \
+C:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\CordovaLib\ant-build\AndroidManifest.xml : \
+C:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\CordovaLib\AndroidManifest.xml \

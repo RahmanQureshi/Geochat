@@ -31,9 +31,9 @@
     </head>
     <body>
         <h1>Hello, World</h1>
-        <!--
+
         <script type="text/javascript" src="cordova.js"></script>
-        -->
+
         <!--<script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript">
 	//app.initialize();
@@ -42,7 +42,6 @@
 <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
 <script>
   var socket = io.connect('http://hbar.ca:8080');
-  var position = {coords:{latitude:0, longitude:0}};//get_location();
 
   /* OBJECTS
 
@@ -52,13 +51,23 @@
 
   */
 
-  var data = {
-    name: 'Paul',
-    latitude: position.coords.latitude,
-    longitude: position.coords.longitude,
-  }
 
-  socket.emit('client:connection', data);
+  (function connect () {
+
+    navigator.geolocation.watchPosition(function(position) {
+
+      var data = {
+        name: 'Paul',
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      socket.emit('client:connection', data);
+
+    }, function () {
+      alert('error');
+    }, { timeout: 5000 });
+
+  })();
 
   socket.on('server:rooms', function (rooms) {
     console.log('rooms: '+JSON.stringify(rooms));
@@ -74,13 +83,6 @@
     console.log('new msg: ' + JSON.stringify(msg));
   });
 
-  function get_location() {
-    navigator.geolocation.watchPosition(function(position) {
-      return position;
-    }, function () {
-      alert('error');
-    }, { timeout: 5000 });
-  }
 
 </script>	
 	
