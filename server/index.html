@@ -1,7 +1,8 @@
+<div>hi</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io.connect('http://localhost:8000');
-  var location = get_location();
+  var location = {lat:0, lng:0};//get_location();
 
   /* OBJECTS
 
@@ -15,8 +16,8 @@
 
   socket.on('server:rooms', function (rooms) {
     console.log('rooms: '+JSON.stringify(rooms));
-    var room = ...;
-    socket.emit('client:room', room);
+    // var room = ...;
+    // socket.emit('client:room', room);
   });
 
   socket.on('server:recent_messages', function (messages) {

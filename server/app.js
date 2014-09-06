@@ -2,7 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-server.listen(8000);
+server.listen(8080);
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
@@ -18,6 +18,7 @@ user = {name:string, last_location:{}, timestamp:number, room_id:number}
 
 // SOCKETS
 
+// kick clients that don't update their location
 var CLIENT_TIMEOUT = 100000;
 
 var rooms = [];
