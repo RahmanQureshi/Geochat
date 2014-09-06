@@ -2,9 +2,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var User = require('./www/js/klass/User.js');
-var Room = require('./www/js/klass/Room.js');
-var Message = require('./www/js/klass/Message.js');
+var User = require('./www/js/klasss/User.js');
+var Room = require('./www/js/klasss/Room.js');
+var Message = require('./www/js/klasss/Message.js');
 
 http.listen(8080);
 
@@ -81,10 +81,29 @@ io.on('connection', function (socket) {
       console.log('join: ', user.name, ' to ', rid);
       room.users.push(user);
       user.rid = rid;
-      // socket.join(room.id);
-      msgs = room.messages.slice(0,100);
     }
-    socket.emit('server:join_room_result', {resp:resp, messages:msgs});
+    socket.emit('server:join_room_result', {resp:resp});
+  });
+
+  socket.on('client:message_history', function (data) {
+    var uid = data.uid;
+    var user = find_user(uid);
+    update_posn(user, data.position);
+    if (user.rid != '') {
+      var room = find_room(rid);
+      var resp = validate(room, user);
+      var msgs = [];
+      if (resp == 1) {
+        console.log('join: ', user.name, ' to ', rid);
+        room.users.push(user);
+        user.rid = rid;
+        // socket.join(room.id);
+        msgs = room.messages.slice(0,100);
+      }
+      socket.emit('server:message_history', {resp:1, messages:msgs});
+    } else {
+      socket.emit('server:message_history', {resp:-1});
+    }    
   });
 
   socket.on('client:add_msg', function (data) {
@@ -139,6 +158,11 @@ function validate(r,u){
   } else {
     return -1;
   }
+}
+
+function update_posn (u, posn) {
+  u.position = posn;
+  u.last_updated = Date.now();
 }
 
 function find_user(uid) {
