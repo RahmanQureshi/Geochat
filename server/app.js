@@ -2,7 +2,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var User = require('./User.js');
+var User = require('./www/js/klass/User.js');
+var Room = require('./www/js/klass/Room.js');
+var Message = require('./www/js/klass/Message.js');
 
 http.listen(8080);
 
@@ -49,30 +51,79 @@ io.on('connection', function (socket) {
   // socket.emit('server:')
 
   // wait for user to provide location
-  socket.on('client:connection', function (data) {
+  socket.on('client:handshake', function (data) {
     console.log("client made connection handshake request thing\n");
-    var name = data.name;
-    var latitude  = data.latitude;
-    var longitude = data.longitude;
-    console.log('connect: ', name, ' at ', latitude + ";" + longitude);
-    var newUser = new User(name, latitude, longitude);
+    // user
+    var newUser = new User(data.name, data.position, socket);
     users.push(newUser);
-    socket.emit('server:rooms', [{},{},{}]);
+    socket.emit('server:handshake', newUser.uid);
   });
 
-  // socket.on('client:join', function (name, location, room_id) {
-  //   console.log('join: ', name, ' to ', room_id);
-  //   socket.emit('server:recent_messages', [{},{},{}]);
-  // });
+  socket.on('client:get_rooms', function (uid) {
+    var user = find_user(uid);
+    local_rooms = [];
+    rooms.forEach(function (r) {
+      if (dist_km(user.position, r.center) < r.radius) {
+        local_rooms.push(r.rid);
+      }
+    })
+    socket.emit('server:rooms', local_rooms);
+  });
 
-  // socket.on('client:add_msg', function (name, msg) {
-  //   console.log('add_msg: ', name, ' says: ', msg);
-  //   socket.emit('server:add_msg','success');
-  //   the_room = room_of(name);
-  //   the_room.users.forEach(function (u) {
-  //   	u.socket.emit('server:new_msg', msg);
-  //   });
-  // });
+  socket.on('client:join_room', function (data) {
+    var uid = data.uid;
+    var user = find_user(uid);
+    var rid = data.rid;
+    var room = find_room(rid);
+    var resp = validate(room, user);
+    var msgs = [];
+    if (resp == 1) {
+      console.log('join: ', user.name, ' to ', rid);
+      room.users.push(user);
+      user.rid = rid;
+      // socket.join(room.id);
+      msgs = room.messages.slice(0,100);
+    }
+    socket.emit('server:join_room_result', {resp:resp, messages:msgs});
+  });
+
+  socket.on('client:add_msg', function (data) {
+    var uid = data.uid;
+    var user = find_user(uid);[]
+    if (Date.now() - user.timestamp > CLIENT_TIMEOUT) {
+      
+      // if the user has not updated location in a while,
+      // emit msg added failed, display view to alert not sent
+      socket.emit('server:add_msg_result', 0);
+    }
+    var msg = new Message(uid, data.msg)
+    if (user.rid != '') {
+      var room = find_room(rid);
+      room.messages.push(msg);
+      // notify all room members
+      room.users.forEach(function (u) {
+        u.socket.emit('server:board_updated', msg);
+      });
+    } else {
+      var fuck = 'fuck'; // TODO
+    }
+  });
+
+  socket.on('client:add_room', function (data) {
+    var name = data.name;
+    var center = data.location;
+    var radius = data.radius;
+    var room = new Room(name, center, radius)
+    rooms.push(room);
+    socket.emit('server:add_room_result', 1);
+  });
+
+  socket.on('client:heartbeat', function (data) {
+    var uid = data.uid;
+    var user = find_user(uid);
+    user.position = data.position;
+    user.last_updated = Date.now();
+  });
 
   socket.on('disconnect', function () {
     // io.sockets.emit('user disconnected');
@@ -82,7 +133,35 @@ io.on('connection', function (socket) {
 
 /******************/
 
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+function validate(r,u){
+  if (dist_km(r.position, u.position) <= r.radius) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+function find_user(uid) {
+  users.forEach(function (u) {
+    if (u.uid == uid) {
+      return u;
+    }
+  });
+}
+
+function find_room(rid) {
+  rooms.forEach(function (r) {
+    if (r.rid == rid) {
+      return r;
+    }
+  });
+}
+
+function dist_km(p1, p2) {
+  var lat1 = p1.latitude;
+  var lon1 = p1.longitude;
+  var lat2 = p2.latitude;
+  var lon2 = p2.longitude;
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
   var dLon = deg2rad(lon2-lon1); 
