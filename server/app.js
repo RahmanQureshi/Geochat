@@ -4,7 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var User = require('./User.js');
 
-http.listen(8000);
+http.listen(8080);
 
 
 app.use('/js', express.static('www/js'));
