@@ -50,6 +50,7 @@ io.on('connection', function (socket) {
 
   // wait for user to provide location
   socket.on('client:connection', function (data) {
+    console.log("client made connection handshake request thing\n");
     var name = data.name;
     var latitude  = data.latitude;
     var longitude = data.longitude;
