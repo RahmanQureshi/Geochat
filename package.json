@@ -1,0 +1,9 @@
+{
+  "name": "node-geochat",
+  "description": "geochat implementation in node",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x"
+  }
+}
