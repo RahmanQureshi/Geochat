@@ -50,8 +50,11 @@ io.on('connection', function (socket) {
 
   // wait for user to provide location
   socket.on('client:connection', function (data) {
-    console.log('connect: ', data.name, ' at ', data.lat + ";" + data.lon);
-    var newUser = new User(name, lat, lon);
+    var name = data.name;
+    var latitude  = data.latitude;
+    var longitude = data.longitude;
+    console.log('connect: ', name, ' at ', latitude + ";" + longitude);
+    var newUser = new User(name, latitude, longitude);
     users.push(newUser);
     socket.emit('server:rooms', [{},{},{}]);
   });

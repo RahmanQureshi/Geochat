@@ -31,7 +31,9 @@
     </head>
     <body>
         <h1>Hello, World</h1>
+        <!--
         <script type="text/javascript" src="cordova.js"></script>
+        -->
         <!--<script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript">
 	//app.initialize();
@@ -40,7 +42,7 @@
 <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
 <script>
   var socket = io.connect('http://localhost:8000');
-  var position = get_location();
+  var position = {coords:{latitude:0, longitude:0}};//get_location();
 
   /* OBJECTS
 
@@ -52,16 +54,16 @@
 
   var data = {
     name: 'Paul',
-    lat: position.coords.latitude,
-    lon: position.coords.longitude,
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude,
   }
 
   socket.emit('client:connection', data);
 
   socket.on('server:rooms', function (rooms) {
     console.log('rooms: '+JSON.stringify(rooms));
-    var room = ...;
-    socket.emit('client:room', room);
+    // var room = ...;
+    // socket.emit('client:room', room);
   });
 
   socket.on('server:recent_messages', function (messages) {
