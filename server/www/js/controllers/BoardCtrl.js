@@ -1,4 +1,4 @@
-app.module('geoChatApp')
+angular.module('geoChatApp')
     .controller('BoardCtrl', function ($scope, SocketService, UserService, LocationService) {
 
     var socket = SocketService.get('server');

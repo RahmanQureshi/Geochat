@@ -1,52 +1,54 @@
-app.module('geoChatApp')
+angular.module('geoChatApp')
 
     .controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval, $location) {
+
     $scope.name = "Hello, World";
     $scope.rooms = [];
     var socket = SocketService.get('server');
 
-    (function () {
-        var name = prompt('Please Enter Your Nick Name');
+    function init() {
+        var name = prompt('Please enter your nick name');
         UserService.setName(name);
-        LocationService.getLocation().then(position) {
+        LocationService.getLocation().then(function (position) {
             socket.emit('client:handshake', {
-                'name': name,
+                name: name,
                 position: {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 }
-            });
-        }
-    })();
+            })
+        })
+    }
+    init();
 
     $interval(function () {
         sendLocation();
     }, 25000);
 
     function sendLocation() {
-        LocationService.getLocation().then(position) {
+        LocationService.getLocation().then(function (position) {
             socket.emit('client:heartbeat', {
-                uid: UserService.getUid,
+                uid:UserService.getUid(),
                 position: {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 }
-            });
-        }
-    }
+            })
+        })
+    };
 
     $scope.joinRoom = function (rid) {
-        LocationService.getLocation().then(position) {
+        LocationService.getLocation().then(function (position) {
             socket.emit('client:join_room', {
-                uid: UserService.getUid,
+                uid: UserService.getUid(),
                 rid: rid,
                 position: {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 }
             });
-        }
-    };
+        });
+    }
 
     $scope.addRoom = function (name, radius) {
         LocationService.getLocation().then(function (position) {
@@ -87,6 +89,5 @@ app.module('geoChatApp')
             uid: UserService.getUid()
         });
     })();
-
 
 });

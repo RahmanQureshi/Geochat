@@ -1,4 +1,4 @@
-app.module('geoChatApp')
+angular.module('geoChatApp')
     .factory('LocationService', function LocationService($q) {
     return {
         getLocation: function () {

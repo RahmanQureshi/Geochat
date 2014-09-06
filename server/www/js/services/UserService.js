@@ -1,4 +1,4 @@
-app.module('geoChatApp')
+angular.module('geoChatApp')
     .factory('UserService', function UserService() {
 
     var user = {};

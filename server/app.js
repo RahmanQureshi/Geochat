@@ -12,6 +12,7 @@ http.listen(8080);
 app.use('/js', express.static('www/js'));
 app.use('/css', express.static('www/css'));
 app.use('/img', express.static('www/img'));
+app.use('/bower_components', express.static('www/bower_components'));
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/www/index.html');

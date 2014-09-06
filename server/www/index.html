@@ -26,8 +26,8 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="www/css/index.css" />
-        <link rel ="stylesheet" href="www/css/flat-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/index.css" />
+        <link rel ="stylesheet" href="/css/flat-ui.css"/>
         <title>Hello World</title>
     </head>
     <body>
@@ -36,13 +36,14 @@
         <div ng-view></div>
 
         <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript "src="/www/js/app.js"></script>
-        <script type="text/javascript "src="/www/js/controllers/MainCtrl.js"></script>
-        <script type="text/javascript "src="/www/js/controllers/BoardCtrl.js"></script>
-        <script type="text/javascript "src="/www/js/services/LocationService.js"></script>
-        <script type="text/javascript "src="/www/js/services/UserService.js"></script>
-        <script type="text/javascript "src="/www/js/services/SocketService.js"></script>
-	
+        <script type="text/javascript "src="/bower_components/angularjs/angular.js"></script>
+        <script type="text/javascript "src="/bower_components/angular-route/angular-route.min.js"></script>
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <script type="text/javascript "src="/js/app.js"></script>
+        <script type="text/javascript "src="/js/services/SocketService.js"></script>
+        <script type="text/javascript "src="/js/services/LocationService.js"></script>
+        <script type="text/javascript "src="/js/services/UserService.js"></script>
+        <script type="text/javascript "src="/js/controllers/MainCtrl.js"></script>
+        <script type="text/javascript "src="/js/controllers/BoardCtrl.js"></script>
     </body>
 </html>

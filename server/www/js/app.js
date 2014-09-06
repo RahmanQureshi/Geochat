@@ -1,6 +1,6 @@
-app.module('geoChatApp', [])
+angular.module('geoChatApp', ['ngRoute'])
 
-    .config(function ($routeProvider, SocketServiceProvider) {
+    .config(function ($routeProvider, socketServiceProvider) {
 
     $routeProvider.when('/', {
         templateUrl: '/www/partials/main.html',

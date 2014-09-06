@@ -1,4 +1,4 @@
-app.module('geoChatApp')
+angular.module('geoChatApp')
     .provider('SocketService', function SocketServiceProvider() {
 
     var connections = {};
