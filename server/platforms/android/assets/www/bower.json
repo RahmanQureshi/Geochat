@@ -1,0 +1,14 @@
+{
+  "name": "www",
+  "version": "0.0.0",
+  "description": "none",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
