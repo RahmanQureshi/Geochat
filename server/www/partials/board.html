@@ -1,0 +1,16 @@
+<div id="message" ng-repeat="message in messages">
+	<div style="padding:7px;">
+	<h6> SWAGLORD:</h6>
+	<span><p>random message blah blah blah blah blah blah blah blah blah blah blah blah <p></span>
+	<span> 12:10 </span>
+	</div>
+</div>
+
+<div>
+	<div id="newmsg">
+		<input type="text" class="form-control login-field" ng-model="message" value placeholder="Write a Message"> 
+	</div>
+	<div id ="addchat" class = "btn-block btn-lg btn-primary" ng-click="addMsg(message)"> 
+		<span class ="fui-arrow-right">Send</span>
+	</div>
+</div>
