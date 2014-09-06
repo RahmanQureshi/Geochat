@@ -19,7 +19,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html ng-app="geoChatApp">
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -32,59 +32,16 @@
     <body>
         <h1>Hello, World</h1>
 
+        <div ng-view></div>
+
+        <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
-
-        <!--<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript">
-	//app.initialize();
-</script>-->
-	
-<script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
-<script>
-  var socket = io.connect('http://hbar.ca:8080');
-
-  /* OBJECTS
-
-  room = {name:string, users:[], messages:[], center:{}, radius:number}
-
-  user = {name:string, last_location:{}, timestamp:number, room_id:number}
-
-  */
-
-
-  (function connect () {
-
-    navigator.geolocation.watchPosition(function(position) {
-
-      var data = {
-        name: 'Paul',
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      socket.emit('client:connection', data);
-
-    }, function () {
-      alert('error');
-    }, { timeout: 5000 });
-
-  })();
-
-  socket.on('server:rooms', function (rooms) {
-    console.log('rooms: '+JSON.stringify(rooms));
-    // var room = ...;
-    // socket.emit('client:room', room);
-  });
-
-  socket.on('server:recent_messages', function (messages) {
-    console.log('messages: ' + JSON.stringify(messages));
-  });
-
-  socket.on('server:new_msg', function (msg) {
-    console.log('new msg: ' + JSON.stringify(msg));
-  });
-
-
-</script>	
+        <script type="text/javascript "src="/www/js/app.js"></script>
+        <script type="text/javascript "src="/www/js/controllers/MainCtrl.js"></script>
+        <script type="text/javascript "src="/www/js/controllers/BoardCtrl.js"></script>
+        <script type="text/javascript "src="/www/js/services/LocationService.js"></script>
+        <script type="text/javascript "src="/www/js/services/UserService.js"></script>
+        <script type="text/javascript "src="/www/js/services/SocketService.js"></script>
 	
     </body>
 </html>
