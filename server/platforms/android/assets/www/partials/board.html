@@ -1,0 +1,16 @@
+<div id="message" ng-repeat="msg in messages">
+	<div style="padding:7px;">
+	<h6> {{msg.sender}}:</h6>
+	<span><p>{{msg.body}}<p></span>
+	<span>{{msg.timestamp}}</span>
+	</div>
+</div>
+
+<div>
+	<div id="newmsg">
+		<input type="text" class="form-control login-field" ng-model="message" value placeholder="Write a Message"> 
+	</div>
+	<div id ="addchat" class = "btn-block btn-lg btn-primary" ng-click="addMsg()"> 
+		<span class ="fui-arrow-right">Send</span>
+	</div>
+</div>

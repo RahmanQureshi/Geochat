@@ -13,6 +13,7 @@
   ],
   "dependencies": {
     "angularjs": "~1.2.23",
-    "angular-route": "~1.2.23"
+    "angular-route": "~1.2.23",
+    "cordova": "~3.4.0"
   }
 }
