@@ -2,9 +2,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var User = require('./www/js/klasss/User.js');
-var Room = require('./www/js/klasss/Room.js');
-var Message = require('./www/js/klasss/Message.js');
+var User = require('./www/js/classes/User.js');
+var Room = require('./www/js/classes/Room.js');
+var Message = require('./www/js/classes/Message.js');
 
 http.listen(8080);
 
