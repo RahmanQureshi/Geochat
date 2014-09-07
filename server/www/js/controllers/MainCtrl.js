@@ -7,7 +7,7 @@ angular.module('geoChatApp')
     var socket;
 
     function init() {
-        SocketService.newConnection('server', 'http://localhost:8080'); // switched from configuration to here because we providers were not behaving
+        SocketService.newConnection('server', 'http://hbar.ca:8080'); // switched from configuration to here because we providers were not behaving
         socket = SocketService.get('server');
         if (!UserService.getUid()) {
             var name = $window.prompt('Please enter your name');
