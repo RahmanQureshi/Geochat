@@ -37,14 +37,15 @@ var rooms = [];
 var users = [];
 
 function room_of(name) {
-	rooms.forEach(function (r) {
-		r.forEach(function (u) {
+  for (var i=0; i<rooms.length; i++) {
+	  var r = rooms[i];
+		for (var j=0; j<r.users.length; j++){
+      var u = r.users[j];
 			if (u.name == name) {
 				return u;
 			}
-		});
-	});
-	return;
+		}
+	}
 }
 
 io.on('connection', function (socket) {
@@ -97,16 +98,14 @@ io.on('connection', function (socket) {
     var user = find_user(uid);
     update_posn(user, data.position);
     if (user.rid != '') {
+      var rid = user.rid;
       var room = find_room(rid);
       var resp = validate(room, user);
       var msgs = [];
       if (resp == 1) {
-        console.log('join: ', user.name, ' to ', rid);
-        room.users.push(user);
         user.rid = rid;
         msgs = room.messages;
       }
-      console.log(msgs);
       socket.emit('server:message_history', {resp:1, messages:msgs});
     } else {
       socket.emit('server:message_history', {resp:-1});
@@ -121,17 +120,19 @@ io.on('connection', function (socket) {
       // if the user has not updated location in a while,
       // emit msg added failed, display view to alert not sent
       socket.emit('server:add_msg_result', 0);
-    }
-    var msg = new Message(user.name, data.message)
-    if (user.rid != '') {
-      var room = find_room(user.rid);
-      room.messages.push(msg);
-      // notify all room members
-      room.users.forEach(function (u) {
-        u.socket.emit('server:board_updated', msg);
-      });
     } else {
-      var fuck = 'fuck'; // TODO
+      var msg = new Message(user.name, data.message)
+      if (user.rid != '') {
+        var room = find_room(user.rid);
+        room.messages.push(msg);
+        // notify all room members
+        for (var i=0; i<room.users.length; i++){
+          var u = room.users[i];
+          u.socket.emit('server:board_updated', msg);
+        }
+      } else {
+        var fuck = 'fuck'; // TODO
+      }
     }
   });
 
@@ -144,6 +145,17 @@ io.on('connection', function (socket) {
     console.log(room);
     console.log('===================');
     rooms.push(room);
+    trimmed_rooms = [];
+    for (var i=0; i<rooms.length; i++) {
+      var r = rooms[i];
+      trimmed_rooms.push({name:r.name, rid:r.rid});
+    }
+    // let others' know about room change
+    for (var i=0; i<users.length; i++) {
+      var u = users[i];
+      u.socket.emit('server:update_rooms', trimmed_rooms);
+    }
+    // respond to poster
     socket.emit('server:add_room_result', {resp:1, rid:room.rid});
   });
 
@@ -206,6 +218,8 @@ function find_room(rid) {
 }
 
 function dist_km(p1, p2) {
+  return 0;
+  var t = Date.now();
   console.log("### p1: " + p1+ "   p2: " + p2);
   var lat1 = p1.latitude;
   var lon1 = p1.longitude;
@@ -221,6 +235,7 @@ function dist_km(p1, p2) {
     ; 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
+  console.log('**TIME***'+Date.now()-t);
   return d;
 }
 
