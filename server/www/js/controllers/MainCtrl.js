@@ -9,7 +9,7 @@ angular.module('geoChatApp')
     function init() {
         SocketService.newConnection('server', 'http://hbar.ca:8080'); // switched from configuration to here because we providers were not behaving
         socket = SocketService.get('server');
-        if (!UserService.getUid()) {
+        // if (!UserService.getUid()) {
             var name = $window.prompt('Please enter your name');
             UserService.setName(name);
             LocationService.getLocation().then(function (position) {
@@ -21,9 +21,9 @@ angular.module('geoChatApp')
                     }
                 })
             })
-        } else {
-            getRooms();
-        }
+        // } else {
+        //     getRooms();
+        // }
     }
     init();
 
