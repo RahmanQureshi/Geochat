@@ -27,9 +27,9 @@ angular.module('geoChatApp')
     }
     init();
 
-    $interval(function () {
-        sendLocation();
-    }, 5000);
+    //$interval(function () {
+     //   sendLocation();
+    //}, 5000);
 
     function sendLocation() {
         LocationService.getLocation().then(function (position) {
@@ -98,7 +98,6 @@ angular.module('geoChatApp')
         if (data.resp < 1) {
             alert(' Failed to join room ');
         } else {
-
             $location.path('/board');
         }
     });
