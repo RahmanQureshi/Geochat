@@ -1,4 +1,7 @@
-<div class = "room-btn" ng-repeat="room in rooms" ng-click="joinRoom(room.rid)">{{room.name}}</div>
+<div ng-if="noRoomsYet && rooms.length==0" style="text-align: center">
+	<img src="/img/spin.gif"/>
+</div>
+<div class = "room-btn" ng-repeat="room in rooms" ng-click="joinRoom(room)">{{room.name}}</div>
 <div id ="addchat" id="add-room" ng-click="addRoom();"> 
 	<span class ="fui-plus">Add Room</span>
 </div>
@@ -6,6 +9,17 @@
 body{
 	background-color: #ecf0f1;
 	color: #2c3e50;
+}
+.sprite-spinner {
+  overflow: hidden;
+  position: relative;
+  display:inline-block;
+  text-align:left;
+}
+
+.spinner-wrap {
+  text-align:center;
+  margin:100px auto;
 }
 .room-btn{
 	background-color: #e67e22;

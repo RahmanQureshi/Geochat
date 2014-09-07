@@ -13,11 +13,12 @@ angular.module('geoChatApp')
     };
     var get = function (name) {
         console.log(connections);
-        if ( name in Object.keys(connections) ) {
-            alert('Socket not found');
-            return null;
+        if ( name in connections ) {
+            return connections[name];
+        } else {
+            console.log('Socket not found, abort to root... [TODO]');
+            window.location.replace('/');
         }
-        return connections[name];
     }
 
     return {
