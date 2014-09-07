@@ -6,4 +6,7 @@ c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-b
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\com\phonegap\helloworld\R$string.class \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\com\phonegap\helloworld\R$xml.class \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\com\phonegap\helloworld\R.class \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\org\apache\cordova\camera\CameraLauncher.class \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\org\apache\cordova\camera\ExifHelper.class \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\classes\org\apache\cordova\camera\FileHelper.class \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\ant-build\dexedLibs\classes-438852c725a36400c66a882c607330b0.jar \

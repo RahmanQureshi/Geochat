@@ -1,0 +1,7 @@
+{{name}}
+<div id = "room1" class = "btn-block btn-lg btn-primary" ng-repeat="room in rooms" ng-click="joinRoom(room.rid)"> 
+	<h3> {{room.name}} </h3> 
+</div>
+<div id ="addchat" class = "btn-block btn-lg btn-danger" ng-click="addRoom();"> 
+	<span class ="fui-plus">Add Room</span>
+</div>

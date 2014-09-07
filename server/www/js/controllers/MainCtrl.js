@@ -6,6 +6,8 @@ angular.module('geoChatApp')
     $scope.rooms = [];
     var socket;
 
+    console.log('mainCtrl');
+
     function init() {
         SocketService.newConnection('server', 'http://localhost:8080'); // switched from configuration to here because we providers were not behaving
         socket = SocketService.get('server');
@@ -18,8 +20,8 @@ angular.module('geoChatApp')
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 }
-            })
-        })
+            });
+        });
     }
     init();
 
