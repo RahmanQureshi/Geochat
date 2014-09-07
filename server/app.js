@@ -171,7 +171,6 @@ io.on('connection', function (socket) {
 
 function validate(r,u){
   var d = dist_km(r.position, u.position);
-  console.log(d);
   if (d <= r.radius) {
     return 1;
   } else {
@@ -225,6 +224,7 @@ function dist_km(p1, p2) {
     ; 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
+  console.log('d = '+d);
   console.log('---------------');
   return d;
 }
