@@ -22,7 +22,7 @@ angular.module('geoChatApp')
                 })
             })
         // } else {
-        //     getRooms();
+            getRooms();
         // }
     }
     init();
