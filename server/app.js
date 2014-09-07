@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
   res.sendfile(__dirname + '/www/index.html');
 });
 
-// SOCKETS
+/******** SOCKETS **********/
 
 // kick clients that don't update their location
 var CLIENT_TIMEOUT = 100000;
@@ -68,13 +68,14 @@ io.on('connection', function (socket) {
   });
 
   socket.on('client:join_room', function (data) {
+    console.log('--- client joined ---###');
+    console.log(JSON.stringify(data));
+    console.log('---------------------###');
     var uid = data.uid;
     var user = find_user(uid);
     update_posn(user, data.position);
     var rid = data.rid;
-    console.log("----- "+data);
     var room = find_room(rid);
-    console.log("@@@: rid: " + rid + "   room " + room)
     var resp = validate(room, user);
     var msgs = [];
     if (resp == 1) {
@@ -166,7 +167,7 @@ io.on('connection', function (socket) {
 });
 
 
-/******************/
+/******** HELPERS **********/
 
 function validate(r,u){
   var d = dist_km(r.position, u.position);
