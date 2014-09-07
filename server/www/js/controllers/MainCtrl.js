@@ -2,7 +2,7 @@ angular.module('geoChatApp')
 
     .controller('MainCtrl', function ($scope, SocketService, LocationService, UserService, $interval, $location, $window) {
 
-    $scope.name = "Hello, World";
+    // $scope.name = "Hello, World";
     $scope.rooms = [];
     var socket;
 

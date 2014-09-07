@@ -52,6 +52,14 @@ io.on('connection', function (socket) {
     var newUser = new User(data.name, data.position, socket);
     users.push(newUser);
     socket.emit('server:handshake', newUser.uid);
+    // send existing rooms
+    trimmed_rooms = [];
+    for (var i=0; i<rooms.length; i++) {
+      var r = rooms[i];
+      trimmed_rooms.push({name:r.name, rid:r.rid});
+    }
+    // let others' know about room change
+    socket.emit('server:update_rooms', trimmed_rooms);
   });
 
   socket.on('client:get_rooms', function (data) {
@@ -124,7 +132,7 @@ io.on('connection', function (socket) {
           u.socket.emit('server:board_updated', msg);
         }
       } else {
-        var fuck = 'fuck'; // TODO
+        socket.emit('server:add_msg_result', 0);
       }
     }
   });

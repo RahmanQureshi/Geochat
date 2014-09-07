@@ -1,16 +1,80 @@
-<div id="message" ng-repeat="msg in messages">
-	<div style="padding:7px;">
-	<h6> {{msg.sender}}:</h6>
-	<span><p>{{msg.body}}<p></span>
-	<span>{{msg.timestamp}}</span>
-	</div>
+<div class="message" ng-repeat="msg in messages">
+	<h6 class="msg-sender"> {{msg.sender}}:</h6>
+	<span class="msg-body"><p>{{msg.body}}<p></span>
+	<span class="msg-time">{{getDate(msg.timestamp)}}</span>
 </div>
 
-<div>
+<div id="new-msg-area">
 	<div id="newmsg">
-		<input type="text" class="form-control login-field" ng-model="message" value placeholder="Write a Message"> 
+		<input type="text" class="input" ng-model="message" value placeholder="Write a Message"> 
 	</div>
-	<div id ="addchat" class = "btn-block btn-lg btn-primary" ng-click="addMsg()"> 
-		<span class ="fui-arrow-right">Send</span>
+	<div id ="addchat" class = "send-btn" ng-click="addMsg()"> 
+		<span id ="sendspan">Send</span>
 	</div>
 </div>
+<style>
+body{
+	background-color: #ecf0f1;
+	color: #2c3e50;
+}
+.message{
+	background-color: #3498db;
+	border-style: solid;
+	margin: 5px auto;
+	border-radius: 4px;
+	padding: 5px;
+	color: #2c3e50;
+	width: 70%;
+}
+.msg-sender{
+	font-size: 20px;
+	margin: 0;
+}
+.msg-body{
+	position: relative;
+	left: 20px;
+}
+.msg-time{
+
+}
+.input{
+	height: 63px;
+	font-size: 24px;
+	padding-left: 15px;
+	margin-top: 12px;
+	border-radius: 4px;
+	border-style: solid;
+	border-color: #aaa;
+}
+.send-btn{
+
+}
+#newmsg{
+	display: inline-block;
+	float: left;
+	width: 80%;
+}
+#new-msg-area{
+	width: 70%;
+	margin: 0 auto;
+}
+#sendspan{
+	padding: 20px;
+	position: relative;
+	top: 35px;
+	right: 17px;
+	background-color: #27DD74;
+	border-color: #3A3A3A;
+	border-style: solid;
+	border-radius: 4px;
+	height: 100%;
+	border-width: 2px;
+}
+#addchat{
+	display: inline-block;
+	float: right;
+	width: 10%;
+	vertical-align: middle;
+	height: 100%
+}
+</style>
