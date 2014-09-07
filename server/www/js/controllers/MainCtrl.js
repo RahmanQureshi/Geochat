@@ -57,6 +57,7 @@ angular.module('geoChatApp')
         var name = prompt('Please enter your name');
         var radius = prompt('Please enter a radius');
         LocationService.getLocation().then(function (position) {
+            console.log(position);
             socket.emit('client:add_room', {
                 name: name,
                 position: {

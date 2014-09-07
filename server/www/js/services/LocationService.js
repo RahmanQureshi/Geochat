@@ -5,6 +5,7 @@ angular.module('geoChatApp')
 
             var deferred = $q.defer();
             navigator.geolocation.watchPosition(function (position) {
+                console.log(position);
                 deferred.resolve(position);
             }, function () {
                 deferred.reject('Timeout'); // is it $q.reject?
