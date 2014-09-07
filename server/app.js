@@ -19,14 +19,6 @@ app.get('/', function (req, res) {
   res.sendfile(__dirname + '/www/index.html');
 });
 
-/* OBJECTS
-
-room = {name:string, users:[], messages:[], center:{}, radius:number}
-
-user = {name:string, last_location:{}, timestamp:number, room_id:number}
-
-*/
-
 // SOCKETS
 
 // kick clients that don't update their location
@@ -169,7 +161,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function () {
-    // io.sockets.emit('user disconnected');
+    // loop through rooms, check emptiness, delete if empty
   });
 });
 
@@ -200,7 +192,6 @@ function find_user(uid) {
   }
   console.log('===================');
   console.log("DIDN'T FIND USER : "+uid);
-  console.log(users);
   console.log('===================');
 }
 
@@ -213,13 +204,11 @@ function find_room(rid) {
   }
   console.log('===================');
   console.log("DIDN'T FIND ROOM : "+rid);
-  console.log(rooms);
   console.log('===================');
 }
 
 function dist_km(p1, p2) {
-  return 0;
-  var t = Date.now();
+  console.log('--------dist_km-------');
   console.log("### p1: " + p1+ "   p2: " + p2);
   var lat1 = p1.latitude;
   var lon1 = p1.longitude;
@@ -235,7 +224,9 @@ function dist_km(p1, p2) {
     ; 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
-  console.log('**TIME***'+Date.now()-t);
+  console.log('time:');
+  console.log(Date.now()-t);
+  console.log('---------------');
   return d;
 }
 
