@@ -41,7 +41,12 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
+    <!-- Custom -->
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
     <plugin name="Geolocation" value="org.apache.cordova.GeoBroker" />
+    <!-- End Custom-->
     <icon src="icon.png" />
     <icon gap:platform="android" gap:qualifier="ldpi" src="res/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="res/icon/android/icon-48-mdpi.png" />

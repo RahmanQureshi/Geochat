@@ -6,8 +6,6 @@ angular.module('geoChatApp')
     $scope.rooms = [];
     var socket;
 
-    console.log('mainCtrl');
-
     function init() {
         SocketService.newConnection('server', 'http://hbar.ca:8080'); // switched from configuration to here because we providers were not behaving
         socket = SocketService.get('server');
@@ -53,7 +51,7 @@ angular.module('geoChatApp')
                 }
             });
         });
-    }
+    };
 
     $scope.addRoom = function () {
         var name = prompt('Please enter your name');
@@ -68,6 +66,31 @@ angular.module('geoChatApp')
                 radius: radius
             });
         });
+    };
+
+    $scope.takePicture = function () {
+        alert('here');
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 60,
+            correctOrientation: true,
+            mediaType: 0, //picture
+            sourceType: 1, //camera - eventually expand to in-memory pictures
+            encodingType: 0, //jpeg
+            destinationType: 0, //binary
+            cameraDirection: 0, //back
+            targetWidth: 75,
+            targetHeight: 100,
+            saveToPhotoAlbum: false
+        });
+
+        function onSuccess(imageData) {
+            var image = document.getElementById('myImage');
+            image.src = "data:image/jpeg;base64," + imageData;
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
     };
 
     socket.on('server:add_room_result', function (room) {

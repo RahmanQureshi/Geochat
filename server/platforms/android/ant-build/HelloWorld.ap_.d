@@ -150,6 +150,12 @@ c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\asset
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\js\services\UserService.js \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\partials\board.html \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\partials\main.html \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera\www \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera\www\Camera.js \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera\www\CameraConstants.js \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera\www\CameraPopoverHandle.js \
+c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\plugins\org.apache.cordova.camera\www\CameraPopoverOptions.js \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\res\icon \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\res\screen \
 c:\cygwin\home\Rahman\mhacks\geochat-sockets-node\server\platforms\android\assets\www\res\icon\android \
