@@ -61,13 +61,14 @@ io.on('connection', function (socket) {
     socket.emit('server:handshake', newUser.uid);
   });
 
-  socket.on('client:get_rooms', function (uid) {
+  socket.on('client:get_rooms', function (data) {
+    var uid = data.uid;
     var user = find_user(uid);
     local_rooms = [];
     for (var i=0; i<rooms.length; i++){
       var r = rooms[i];
-      if (dist_km(user.position, r.center) < r.radius) {
-        local_rooms.push(r.rid);
+      if (dist_km(user.position, r.position) < r.radius) {
+        local_rooms.push({rid:r.rid, name:r.name});
       }
     }
     socket.emit('server:rooms', local_rooms);
@@ -78,7 +79,9 @@ io.on('connection', function (socket) {
     var user = find_user(uid);
     update_posn(user, data.position);
     var rid = data.rid;
+    console.log("----- "+data);
     var room = find_room(rid);
+    console.log("@@@: rid: " + rid + "   room " + room)
     var resp = validate(room, user);
     var msgs = [];
     if (resp == 1) {
@@ -101,9 +104,9 @@ io.on('connection', function (socket) {
         console.log('join: ', user.name, ' to ', rid);
         room.users.push(user);
         user.rid = rid;
-        // socket.join(room.id);
-        msgs = room.messages.slice(0,100);
+        msgs = room.messages;
       }
+      console.log(msgs);
       socket.emit('server:message_history', {resp:1, messages:msgs});
     } else {
       socket.emit('server:message_history', {resp:-1});
@@ -119,7 +122,7 @@ io.on('connection', function (socket) {
       // emit msg added failed, display view to alert not sent
       socket.emit('server:add_msg_result', 0);
     }
-    var msg = new Message(uid, data.msg)
+    var msg = new Message(user.name, data.message)
     if (user.rid != '') {
       var room = find_room(user.rid);
       room.messages.push(msg);
@@ -203,6 +206,7 @@ function find_room(rid) {
 }
 
 function dist_km(p1, p2) {
+  console.log("### p1: " + p1+ "   p2: " + p2);
   var lat1 = p1.latitude;
   var lon1 = p1.longitude;
   var lat2 = p2.latitude;

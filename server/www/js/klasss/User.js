@@ -8,6 +8,7 @@ function User(name, position, socket) {
 	this.position.latitude = position.latitude;
 	this.position.longitude = position.longitude;
 	this.timestamp = t;
+	this.rid = '';
 }
 /*
 User.prototype.setRoom = function (room) {

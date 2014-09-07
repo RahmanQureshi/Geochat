@@ -2,14 +2,16 @@ angular.module('geoChatApp')
     .controller('BoardCtrl', function ($scope, SocketService, UserService, LocationService) {
 
     var socket = SocketService.get('server');
+    $scope.message = '';
     $scope.messages = [];
     var users = [];
 
-    $scope.addMsg = function (message) {
+    $scope.addMsg = function () {
         socket.emit('client:add_msg', {
-            'message': message,
+            'message': $scope.message,
             uid: UserService.getUid()
         });
+        $scope.message = '';
     };
 
     LocationService.getLocation().then(function (position) {
@@ -17,6 +19,7 @@ angular.module('geoChatApp')
             uid:UserService.getUid(),
             position:{longitude:position.coords.longitude, latitude:position.coords.latitude} });
     });
+
     socket.on('client:message_history', function (messageArray) {
     	$scope.messages = messageArray;
     });

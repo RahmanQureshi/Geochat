@@ -40,8 +40,8 @@ angular.module('geoChatApp')
     };
 
     $scope.joinRoom = function (rid) {
+        console.log("#### : " + rid);
         LocationService.getLocation().then(function (position) {
-            console.log(UserService.getUid());
             socket.emit('client:join_room', {
                 uid: UserService.getUid(),
                 rid: rid,
@@ -77,6 +77,8 @@ angular.module('geoChatApp')
     });
     socket.on('server:handshake', function (uid) {
         UserService.setUid(uid);
+        getRooms();
+        console.log("1st: " + uid);
     });
     socket.on('server:rooms', function (roomArray) {
         $scope.rooms = roomArray;
@@ -89,10 +91,11 @@ angular.module('geoChatApp')
         }
     });
 
-    (function getRooms() {
+    function getRooms() {
+        console.log("2nd : " + UserService.getUid());
         socket.emit('client:get_rooms', {
             uid: UserService.getUid()
         });
-    })();
+    };
 
 });
