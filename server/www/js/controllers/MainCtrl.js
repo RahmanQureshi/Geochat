@@ -75,6 +75,11 @@ angular.module('geoChatApp')
             $scope.joinRoom(room.rid);
         }
     });
+
+    socket.on('server:update_rooms', function (roomsArray) {
+        $scope.rooms = roomsArray;
+    });
+
     socket.on('server:handshake', function (uid) {
         UserService.setUid(uid);
         getRooms();
