@@ -1,13 +1,17 @@
 <html ng-app="geoChatApp">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel ="stylesheet" href="css/flat-ui.css"/>
-        <title>Hello World</title>
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="/css/index.css" />
+        <link rel ="stylesheet" href="/css/flat-ui.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <title>GeoChats</title>
     </head>
-    <body>
-        <h1>Hello, World</h1>
-        <span ng-controller="MyCtrls">hi {{name}}</span>
+    <body style="font-family: 'Open Sans', sans-serif;">
+        <a href="/" style="text-decoration: none; color: #2c3e50"><h1>GeoChats</h1></a>
 
         <div ng-view>
         </div>

@@ -2,6 +2,22 @@ angular.module('geoChatApp')
     .factory('LocationService', function LocationService($q, $timeout) {
     return {
         getLocation: function () {
+            var dummy = {
+                    coords: {
+                        longitude: 5,
+                        latitude: 5
+                    }
+            };
+
+            var deferred = $q.defer();
+            
+            navigator.geolocation.getCurrentPosition(function (position) {
+                deferred.resolve(position);
+            });
+
+            return deferred.promise;
+
+            /*
             var deferred = $q.defer();
             navigator.geolocation.watchPosition(function (position) {
                 deferred.resolve(position);
@@ -11,6 +27,7 @@ angular.module('geoChatApp')
                 timeout: 5000
             });
             return deferred.promise;
+            */
         }
     };
 

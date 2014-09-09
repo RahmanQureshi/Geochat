@@ -14,6 +14,11 @@ angular.module('geoChatApp')
         $scope.message = '';
     };
 
+    $scope.getDate = function (ms) {
+        var t = new Date(ms);
+        return t.toString();
+    }
+
     LocationService.getLocation().then(function (position) {
 	    socket.emit('client:message_history', {
             uid:UserService.getUid(),
@@ -29,6 +34,10 @@ angular.module('geoChatApp')
 
     socket.on('server:board_updated', function (message) {
         $scope.messages.push(message);
+    });
+
+    socket.on('server:add_msg_result', function(int_code) {
+        console.log('add_msg_result: '+int_code);
     });
 
 });

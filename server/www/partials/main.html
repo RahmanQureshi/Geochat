@@ -1,10 +1,55 @@
 <div id = "room1" class = "btn-block btn-lg btn-primary" ng-repeat="room in rooms" ng-click="joinRoom(room.rid)"> 
 	<h3> {{room.name}} </h3> 
+<div ng-if="noRoomsYet && rooms.length==0" style="text-align: center">
+	<img src="/img/spin.gif"/>
 </div>
-<div id ="addchat" class = "btn-block btn-lg btn-danger" ng-click="addRoom();"> 
+<div class = "room-btn" ng-repeat="room in rooms" ng-click="joinRoom(room)">{{room.name}}</div>
+<div id ="addchat" id="add-room" ng-click="addRoom();"> 
 	<span class ="fui-plus">Add Room</span>
 </div>
 <div id ="take-pic-btn" class = "btn-block btn-lg btn-danger" ng-click="takePicture();"> 
 	<span>Add Pic</span>
 </div>
 <img id="myImage" src="">
+<style>
+body{
+	background-color: #ecf0f1;
+	color: #2c3e50;
+}
+.sprite-spinner {
+  overflow: hidden;
+  position: relative;
+  display:inline-block;
+  text-align:left;
+}
+
+.spinner-wrap {
+  text-align:center;
+  margin:100px auto;
+}
+.room-btn{
+	background-color: #e67e22;
+	border-radius: 4px;
+	border-style: solid;
+	margin: 5px auto;
+	position: relative;
+	left: 10px;
+	padding: 0px;
+	width: 50%;
+	text-align: center;
+	font-size: 45px;
+}
+#addchat{
+	background-color: #C58CDD;
+	border-radius: 4px;
+	border-style: solid;
+	margin: 5px auto;
+	position: relative;
+	left: 10px;
+	padding-left: 10px;
+	width: 20%;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+}
+</style>
