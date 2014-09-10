@@ -1,16 +1,10 @@
-<div id = "room1" class = "btn-block btn-lg btn-primary" ng-repeat="room in rooms" ng-click="joinRoom(room.rid)"> 
-	<h3> {{room.name}} </h3> 
 <div ng-if="noRoomsYet && rooms.length==0" style="text-align: center">
-	<img src="/img/spin.gif"/>
+	<img src="img/spin.gif"/>
 </div>
 <div class = "room-btn" ng-repeat="room in rooms" ng-click="joinRoom(room)">{{room.name}}</div>
 <div id ="addchat" id="add-room" ng-click="addRoom();"> 
 	<span class ="fui-plus">Add Room</span>
 </div>
-<div id ="take-pic-btn" class = "btn-block btn-lg btn-danger" ng-click="takePicture();"> 
-	<span>Add Pic</span>
-</div>
-<img id="myImage" src="">
 <style>
 body{
 	background-color: #ecf0f1;

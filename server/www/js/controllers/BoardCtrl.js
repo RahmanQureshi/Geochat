@@ -17,7 +17,7 @@ angular.module('geoChatApp')
     $scope.getDate = function (ms) {
         var t = new Date(ms);
         return t.toString();
-    }
+    };
 
     LocationService.getLocation().then(function (position) {
 	    socket.emit('client:message_history', {
@@ -33,7 +33,10 @@ angular.module('geoChatApp')
     });
 
     socket.on('server:board_updated', function (message) {
-        $scope.messages.push(message);
+        console.log("message received: " + message);
+        $scope.$apply(function () {
+            $scope.messages.push(message);
+        });
     });
 
     socket.on('server:add_msg_result', function(int_code) {

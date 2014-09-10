@@ -8,4 +8,9 @@ function Room(name, position, radius) {
 	this.users=[];
 }
 
+Room.prototype.addUser = function (user) {
+	console.log("Pushing user " + user.uid + " to room " + this.rid);
+	this.users.push(user);
+}
+
 module.exports = Room;

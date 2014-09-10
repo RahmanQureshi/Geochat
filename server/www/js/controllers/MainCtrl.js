@@ -7,7 +7,7 @@ angular.module('geoChatApp')
     var socket;
 
     function init() {
-        SocketService.newConnection('server', 'http://hbar.ca:8080'); // switched from configuration to here because we providers were not behaving
+        SocketService.newConnection('server', 'http://localhost:8080'); // switched from configuration to here because                                                                                                                                                                                                                                                                              we providers were not behaving
         socket = SocketService.get('server');
         // if (!UserService.getUid()) {
             var name = $window.prompt('Please enter your name');
@@ -19,8 +19,8 @@ angular.module('geoChatApp')
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     }
-                })
-            })
+                });
+            });
         // } else {
             getRooms();
         // }
@@ -45,7 +45,6 @@ angular.module('geoChatApp')
 
     $scope.joinRoom = function (room) {
         var rid = room.rid;
-        console.log("#### : " + rid);
         LocationService.getLocation().then(function (position) {
             socket.emit('client:join_room', {
                 uid: UserService.getUid(),
@@ -63,14 +62,15 @@ angular.module('geoChatApp')
         var name = prompt('Please enter the room name');
         var radius = prompt('Please enter a radius');
         LocationService.getLocation().then(function (position) {
-            socket.emit('client:add_room', {
-                name: name,
-                position: {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
+            var obj = {
+                name:name,
+                position:{
+                    latitude:position.coords.latitude,
+                    longitude:position.coords.longitude
                 },
-                radius: radius
-            });
+                radius:radius
+            };
+            socket.emit('client:add_room', obj);
         });
     };
 
@@ -108,13 +108,14 @@ angular.module('geoChatApp')
     });
 
     socket.on('server:update_rooms', function (roomsArray) {
-        $scope.rooms = roomsArray;
+        $scope.$apply( function () {
+            $scope.rooms = roomsArray;
+        });
     });
 
     socket.on('server:handshake', function (uid) {
         UserService.setUid(uid);
         getRooms();
-        console.log("1st: " + uid);
     });
     socket.on('server:rooms', function (roomArray) {
         $scope.rooms = roomArray;
@@ -123,14 +124,21 @@ angular.module('geoChatApp')
         if (data.resp < 1) {
             alert(' Failed to join room ');
         } else {
-            $location.path('/board');
+            $scope.$apply( function () {
+                $location.path('/board');
+            });
         }
     });
 
     function getRooms() {
-        console.log("2nd : " + UserService.getUid());
-        socket.emit('client:get_rooms', {
-            uid: UserService.getUid()
+        LocationService.getLocation().then(function (position) {
+            socket.emit('client:get_rooms', {
+                uid: UserService.getUid(),
+                position: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                }
+            });
         });
     };
 
