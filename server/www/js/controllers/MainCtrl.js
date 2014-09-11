@@ -118,7 +118,9 @@ angular.module('geoChatApp')
         getRooms();
     });
     socket.on('server:rooms', function (roomArray) {
-        $scope.rooms = roomArray;
+        $scope.$apply(function () {
+            $scope.rooms = roomArray;
+        });
     });
     socket.on('server:join_room_result', function (data) {
         if (data.resp < 1) {
