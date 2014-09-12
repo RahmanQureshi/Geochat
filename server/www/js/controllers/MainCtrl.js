@@ -7,7 +7,7 @@ angular.module('geoChatApp')
     var socket;
 
     function init() {
-        SocketService.newConnection('server', 'http://localhost:8080'); // switched from configuration to here because                                                                                                                                                                                                                                                                              we providers were not behaving
+        SocketService.newConnection('server', '/'); // switched from configuration to here because                                                                                                                                                                                                                                                                              we providers were not behaving
         socket = SocketService.get('server');
         // if (!UserService.getUid()) {
             var name = $window.prompt('Please enter your name');
@@ -107,9 +107,9 @@ angular.module('geoChatApp')
         }
     });
 
-    socket.on('server:update_rooms', function (roomsArray) {
+    socket.on('server:new_room', function (room) {
         $scope.$apply( function () {
-            $scope.rooms = roomsArray;
+            $scope.rooms.push(room);
         });
     });
 

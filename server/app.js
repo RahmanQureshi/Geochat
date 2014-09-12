@@ -89,7 +89,7 @@ io.on('connection', function (socket) {
     var newUser = new User(data.name, socket, data.position);
     users.push(newUser);
     socket.emit('server:handshake', newUser.uid);
-    console.log("Handshake done, user pushed in." + newUser.uid);
+    console.log("Handshake done, user pushed in." + newUser.uid + " at " + data.position.latitude + ";" + data.position.longitude);
   });
 
   // return list of rooms in user's area
@@ -130,6 +130,10 @@ io.on('connection', function (socket) {
     user.position = position;
 
     if ( dist_m(user.position, room.position) < room.radius ) {
+      var prevRoom = find_room(user.rid);
+      if ( prevRoom ) {
+        prevRoom.users.splice(prevRoom.users.indexof(user), 1);
+      }
       room.addUser(user);
       user.rid = rid;
       socket.emit('server:join_room_result', {resp:1});
@@ -180,7 +184,7 @@ io.on('connection', function (socket) {
       u = users[i];
       distance_u_r = dist_m(u.position, room.position);
       if ( distance_u_r < room.radius ) {
-        u.socket.emit('server:update_rooms', rooms);
+        u.socket.emit('server:new_room', room);
       }
     }
     // respond to poster
