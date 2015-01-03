@@ -28,6 +28,9 @@ var rooms = [];
 
 var users = [];
 
+var sockets = {}; // uid -> socket
+
+
 /**
 * Return room with given rid
 */
@@ -45,6 +48,7 @@ function find_room(rid) {
 * Finds and returns the user with the specified uid and null otherwise
 */
 function find_user(uid) {
+  console.log("inside find_user")
   for (var i=0; i<users.length; i++){
     var u = users[i];
     if (u.uid == uid) {
@@ -86,20 +90,23 @@ io.on('connection', function (socket) {
 
   // user registration
   socket.on('client:handshake', function (data) {
-    var newUser = new User(data.name, socket, data.position);
+    var newUser = new User(data.name, data.position);
+    sockets[newUser.uid] = socket;
     users.push(newUser);
     socket.emit('server:handshake', newUser.uid);
     console.log("Handshake done, user pushed in." + newUser.uid + " at " + data.position.latitude + ";" + data.position.longitude);
   });
 
   // return list of rooms in user's area
-  socket.on('client:get_rooms', function (data) {
+  socket.on('client:get_rooms', function (data) { 
+    console.log('inside client:get_rooms');
     var uid = data.uid;
     var user = find_user(uid);
     var position = data.position;
     var local_rooms = [];
     var room;
     if ( user == null ) {
+      console.log('user not found');
       socket.emit('server:rooms', {resp:-1});
       return;
     }
@@ -110,7 +117,7 @@ io.on('connection', function (socket) {
         local_rooms.push(room);
       }
     }
-    socket.emit('server:rooms', local_rooms);
+    socket.emit('server:rooms', JSON.stringify(local_rooms));
   });
 
   // add user to chat room if within radius
@@ -147,9 +154,9 @@ io.on('connection', function (socket) {
   socket.on('client:add_msg', function (data) {
     var uid = data.uid;
     var user = find_user(uid);
-    var msg = new Message(user.name, data.message);
     var rid = user.rid;
     var room = find_room(user.rid);
+    var msg = new Message(user, data.message, room);
     var position = data.position;
     var u;
 
@@ -162,7 +169,7 @@ io.on('connection', function (socket) {
       room.messages.push(msg);
       for ( var i = 0; i < room.users.length; i++ ) {
         u = room.users[i];
-        u.socket.emit('server:board_updated', msg);
+        sockets[u.uid].emit('server:board_updated', msg);
       }
     } else {
       socket.emit('server:add_msg_result', -1);
@@ -184,7 +191,7 @@ io.on('connection', function (socket) {
       u = users[i];
       distance_u_r = dist_m(u.position, room.position);
       if ( distance_u_r < room.radius ) {
-        u.socket.emit('server:new_room', room);
+        sockets[u.uid].emit('server:new_room', room);
       }
     }
     // respond to poster

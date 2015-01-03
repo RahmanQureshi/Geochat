@@ -7,6 +7,7 @@ angular.module('geoChatApp')
     var socket;
 
     function init() {
+        console.log('initializing');
         SocketService.newConnection('server', '/'); // switched from configuration to here because                                                                                                                                                                                                                                                                              we providers were not behaving
         socket = SocketService.get('server');
         // if (!UserService.getUid()) {
@@ -20,9 +21,10 @@ angular.module('geoChatApp')
                         longitude: position.coords.longitude
                     }
                 });
+                getRooms(); // get rooms once you are a verified user
             });
         // } else {
-            getRooms();
+            // getRooms();
         // }
     }
     init();
@@ -115,11 +117,13 @@ angular.module('geoChatApp')
 
     socket.on('server:handshake', function (uid) {
         UserService.setUid(uid);
-        getRooms();
     });
+
     socket.on('server:rooms', function (roomArray) {
+        console.log('server:rooms');
+        console.log(roomArray);
         $scope.$apply(function () {
-            $scope.rooms = roomArray;
+            $scope.rooms = JSON.parse(roomArray);
         });
     });
     socket.on('server:join_room_result', function (data) {
